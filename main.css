@@ -1,0 +1,111 @@
+/*#0F0F19 #1F1F33 #3D3D66 #6363A6 #9191F2 #6B6BB3
+
+/*@font-face {
+    font-family: "Minecraft"; 
+
+    src: url("../fonts/minecraft.woff") format("woff"); 
+    font-style: normal; 
+    font-weight: normal; 
+} */
+
+/*@font-face {*/
+/*    font-family: "Consolas"; */
+
+/*    src: url("../fonts/consolas.woff") format("woff"); */
+/*    font-style: normal; */
+/*    font-weight: normal; */
+/*}*/
+
+* {
+    outline: none;
+    margin: 0;
+    padding: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(51,51,51,0) rgb(63,63,63);
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+}
+
+*::-webkit-scrollbar {
+   width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(51,51,51,0);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(63,63,63);
+  border-radius: 0px;
+}
+
+body {
+    background-color: #999999;
+    
+
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+}
+
+.centred{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vcentred{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.fieldName{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-family: Consolas;
+    font-size: 30px;
+    text-shadow: 0px 5px 7px rgba(0, 0, 0, 0.1);
+}
+
+.fieldInput{
+    font-family: Consolas;
+    font-size: 30px;
+    width: 800px;
+    margin-bottom: 15px;
+}
+
+.partTitle{
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-family: Consolas;
+    font-size: 40px;
+    text-shadow: 0px 5px 7px rgba(0, 0, 0, 0.25);
+}
+
+#mainDiv{
+    margin-top: 0px;
+}
+
+#mainArea{
+    background-color: #dddddd;
+    margin-top: 35px;
+    margin-bottom: 35px;
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    min-width: 700px;
+    min-height: 500px;
+    box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.75);
+}
+
+#mainAreaRow{
+    display: flex;
+    flex-direction: row;
+}
+
+#pageTitle{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    font-family: Consolas;
+    font-size: 60px;
+    text-shadow: 0px 5px 7px rgba(0, 0, 0, 0.25);
+}

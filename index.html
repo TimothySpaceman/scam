@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="ua">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+		<title>Giganishin</title>
+		<link rel="stylesheet" href="main.css">
+		<link rel="icon" type="image/png" sizes="512x512" href="images/icon.png">
+	</head>
+	<body id="body">
+        <div id="mainDiv" class="centred">
+            <div id="mainArea" class="centred">
+                <span id="pageTitle" class="centred">Приємного використання!</span>
+                <span class="centred partTitle">Цілі числа</span>
+
+                <span id="decSpan" class="centred fieldName">Десяткова система числення:</span>
+                <input id="decIn" type="text" class="centred fieldInput" value="1">
+
+                <span id="binSpan" class="centred fieldName" style="margin-top: 20px;">Двійкова система числення:</span>
+                <input id="binIn" type="text" class="centred fieldInput" value="">
+
+                <span id="revSpan" class="centred fieldName">Обернений код:</span>
+                <input id="revIn" type="text" class="centred fieldInput" value="">
+
+                <span id="addSpan" class="centred fieldName">Додатковий код:</span>
+                <input id="addIn" type="text" class="centred fieldInput" value="">
+
+                <div class="centred" style="display: flex; flex-direction: row; gap: 10px; margin-top: 10px;">
+                    <span id="regSpan" class="centred fieldName" style="margin-top: 0px;">Розмір регістру:</span>
+                    <input id="regIn" type="text" class="centred fieldInput" value="16" style="width: 200px">
+                </div>
+
+
+
+                <span id="hexSpan" class="centred fieldName" style="margin-top: 20px;">Шістнадцяткова система числення:</span>
+                <input id="hexIn" type="text" class="centred fieldInput" value="">
+
+
+                <span class="centred partTitle">Дробові числа</span>
+                <span id="decFloatSpan" class="centred fieldName">Десяткова система числення:</span>
+                <input id="decFloatIn" type="text" class="centred fieldInput" value="1.5">
+
+                <span id="binFloatSpan" class="centred fieldName">Двійкова система числення:</span>
+                <input id="binFloatIn" type="text" class="centred fieldInput" value="">
+
+                <span id="i3eFloatSpan" class="centred fieldName">IEEE:</span>
+                <input id="i3eFloatIn" type="text" class="centred fieldInput" value="">
+
+                <div class="centred" style="display: flex; flex-direction: row; gap: 10px; margin-top: 10px;">
+                    <span id="regFloatSpan" class="centred fieldName" style="margin-top: 0px;">Розмір регістру:</span>
+                    <select id="regFloatIn" class="centred fieldInput" value="32" style="width: 200px">
+                        <option value="16">16</option>
+                        <option value="32" selected="selected">32</option>
+                        <option value="64">64</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <script src="index.js"></script>
+	</body>
+</html>
+
