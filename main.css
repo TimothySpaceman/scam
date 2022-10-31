@@ -74,7 +74,7 @@ body {
 }
 
 .partTitle{
-    margin-top: 25px;
+    margin-top: 45px;
     margin-bottom: 15px;
     font-family: Consolas;
     font-size: 40px;
@@ -103,7 +103,7 @@ body {
 }
 
 #pageTitle{
-    margin-top: 25px;
+    margin-top: 35px;
     margin-bottom: 25px;
     font-family: Consolas;
     font-size: 60px;
