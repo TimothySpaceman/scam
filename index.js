@@ -440,6 +440,8 @@ class FloatBrain {
             "reg": 0
         }
 
+        this.i3eInfoSpan = document.getElementById("i3eInfoSpan")
+
         this.lastActive = "dec"
 
         this.In["reg"].addEventListener('change', (event) => {
@@ -510,6 +512,7 @@ class FloatBrain {
 
     process(){
         this.getValue()
+        this.i3eInfoSpan.innerHTML = ""
         if(!document.activeElement.value && this.In[document.activeElement.id.slice(0, 3)]){
             document.getElementById(document.activeElement.id.slice(0, 3) + "FloatSpan").style.color = "#ff0000"
         } else {
@@ -686,6 +689,8 @@ class FloatBrain {
         }
 
         this.Val["i3e"] += Pb + M
+
+        this.i3eInfoSpan.innerHTML = "Біт знаку: " + this.Val["i3e"][0] + "<br>Порядок: " + Pb + "<br>Мантиса: " + M
     }
 
     i3e(){
@@ -733,6 +738,7 @@ class FloatBrain {
         }
 
         x = x.slice(Pl)
+        this.i3eInfoSpan.innerHTML = "Біт знаку: " + this.Val["i3e"][0] + "<br>Порядок: " + Pb + "<br>Мантиса: " + x
 
         this.Val["bin"] += x.substring(0, P) + "." + x.substring(P)
         this.bin()
