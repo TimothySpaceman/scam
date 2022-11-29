@@ -52,6 +52,7 @@ class Clocker {
         if(this.active == 10){
             intBrain.process()
             floatBrain.process()
+            mathBrain.getValue()
         }
     }
 
@@ -415,6 +416,257 @@ class IntBrain {
 
         this.bin()
     }
+
+    //convert()
+
+    //makeDec()
+
+    makeBin(dec, reg){
+        let bin = ""
+        let x = Math.abs(dec)
+        if(x > Math.pow(2, reg) - 1){
+            x = Math.pow(2, reg) - 1
+        } else if(dec < -Math.pow(2, reg-1)+1){
+            x = Math.abs(-Math.pow(2, reg-1)+1)
+        }
+        let startVal = reg - 1
+
+        for(let i = 0; i <= startVal; i += 1){
+            if(x < Math.pow(2, i)){
+                startVal = i - 1;
+                break;
+            }
+        }
+
+        for(let i = 0; i < reg - startVal - 1; i += 1){
+            bin += "0"
+        }
+
+        for(let i = startVal; i >= 0; i -= 1){
+            //console.log(x / Math.pow(2, i))
+            bin += parseInt(x / Math.pow(2, i))
+            x %= Math.pow(2, i)
+        }
+
+        if(dec < 0){
+            bin = bin.replaceAt(0, "1")
+        }
+
+        return bin
+    }
+
+    makeRev(bin, reg){
+        let rev = bin
+        for(let i = 1; i < reg; i += 1){
+            if(bin[i] == "0"){
+                rev = rev.replaceAt(i, "1")
+            } else {
+                rev = rev.replaceAt(i, "0")
+            }
+        }
+        return rev
+    }
+
+    makeAdd(rev, reg){
+        let add = rev
+        for(let i = reg-1; i >= 0; i -= 1){
+            if(rev[i] == 0){
+                add = add.replaceAt(i, "1")
+                i -= 1
+                while(i >= 0){
+                    add = add.replaceAt(i, rev[i])
+                    i -= 1
+                }
+            } else  if(rev[i] == 1) {
+                add = add.replaceAt(i, "0")
+            }
+        }
+        return add
+    }
+}
+
+
+class Brain {
+    constructor() {
+    }
+
+    BinToDec(bin, reg){
+        let dec = 0
+        bin = this.Fill(bin, reg)
+
+        for(let i = reg - 1; i > 0; i -= 1){
+            dec += parseInt(bin[i]) * Math.pow(2, reg-1-i)
+        }
+
+        if(bin[0] == 1){
+            dec = -dec
+        }
+
+        return dec
+    }
+
+    BinToRev(bin, reg){
+        bin = this.Fill(bin, reg)
+        let rev = bin
+        for(let i = 1; i < reg; i += 1){
+            if(bin[i] == "0"){
+                rev = rev.replaceAt(i, "1")
+            } else {
+                rev = rev.replaceAt(i, "0")
+            }
+        }
+        rev = rev.replaceAt(0, "1")
+        return rev
+    }
+
+    BinToAdd(bin, reg){
+        let rev = this.BinToRev(bin, reg)
+        return this.Sum(rev, 1, reg)
+    }
+
+    BinToHex(bin, reg){
+        if(reg % 4 != 0){
+            reg += 4 - (reg % 4)
+        }
+        bin = this.Fill(bin, reg)
+
+        let hex = ""
+        for(let i = 0; i < reg; i += 4){
+            hex += binHexMap[bin.substring(i, i+4)]
+        }
+        return hex
+    }
+
+    DecToBin(dec, reg){
+        let bin = ""
+        let x = Math.abs(dec)
+        if(x > Math.pow(2, reg) - 1){
+            x = Math.pow(2, reg) - 1
+        } else if(dec < -Math.pow(2, reg-1)+1){
+            x = Math.abs(-Math.pow(2, reg-1)+1)
+        }
+        let startVal = reg - 1
+
+        for(let i = 0; i <= startVal; i += 1){
+            if(x < Math.pow(2, i)){
+                startVal = i - 1;
+                break;
+            }
+        }
+
+        for(let i = 0; i < reg - startVal - 1; i += 1){
+            bin += "0"
+        }
+
+        for(let i = startVal; i >= 0; i -= 1){
+            bin += parseInt(x / Math.pow(2, i))
+            x %= Math.pow(2, i)
+        }
+
+        if(dec < 0){
+            bin = bin.replaceAt(0, "1")
+        }
+
+        return bin
+    }
+
+    RevToBin(rev, reg){
+        rev = this.Fill(rev, reg)
+        let bin = rev
+        for(let i = 1; i < reg; i += 1){
+            if(rev[i] == "0"){
+                bin = bin.replaceAt(i, "1")
+            } else {
+                bin = bin.replaceAt(i, "0")
+            }
+        }
+        return bin
+    }
+
+    AddToBin(add, reg){
+        add = this.Fill(add)
+        return this.RevToBin(this.Sum(add, "1".repeat(reg), reg), reg)
+    }
+
+    HexToBin(hex, reg){
+        hex = hex.toString()
+        let bin = "0".repeat(reg - hex.length*4)
+        hex = hex.toUpperCase()
+
+        for(let i = 0; i < hex.length; i += 1){
+            bin += hexBinMap[hex[i]]
+        }
+
+        return bin
+    }
+    
+    Convert(number, inType, outType, reg){
+        let bin
+        inType = inType.toLowerCase()
+        outType = outType.toLowerCase()
+
+        if(inType == "bin"){
+            bin = number
+        } else if(inType == "dec"){
+            bin = this.DecToBin(number, reg)
+        } else if(inType == "rev"){
+            bin = this.RevToBin(number, reg)
+        } else if(inType == "add"){
+            bin = this.AddToBin(number, reg)
+        } else if(inType == "hex"){
+            bin = this.HexToBin(number, reg)
+        }
+
+        if(outType == "bin"){
+            return bin
+        } else if(outType == "dec"){
+            return this.BinToDec(bin, reg)
+        } else if(outType == "rev"){
+            return this.BinToRev(bin, reg)
+        } else if(outType == "add"){
+            return this.BinToAdd(bin, reg)
+        } else if(outType == "hex"){
+            return this.BinToHex(bin, reg)
+        }
+    }
+    
+    Fill(num, reg){
+        num = num.toString()
+        let filler = num[0]
+        num = filler.repeat(reg - num.length) + num
+        return num
+    }
+
+    Sum(a, b, reg){
+        a = this.Fill(a, reg)
+        b = this.Fill(b, reg)
+
+        let result = []
+        let carryBits = []
+        let overflow
+        let column
+
+        for (let i = 0; i < reg; i += 1) {
+            carryBits[i] = 0;
+            result[i] = 0;
+        }
+
+        for (let i = reg - 1; i >= 0; i -= 1) {
+            column = parseInt(a[i]) + parseInt(b[i]) + carryBits[i]
+            result[i] = column % 2
+            if (column > 1) {
+                if (i > 0) {
+                    carryBits[i - 1] = 1
+                } else {
+                    overflow = 1
+                }
+            }
+        }
+
+        return result.join("")
+    }
+
+
 }
 
 class FloatBrain {
@@ -451,7 +703,7 @@ class FloatBrain {
 
     onlyDigits(string){
         for (let i = 0; i < string.length; i += 1) {
-            if((string[i] == "." && string.length >= 3) || (string[i] == "-" && i == 0)){
+            if((string[i] == "." && string.length >= 3 && i == string.length-1) || (string[i] == "-" && i == 0)){
                 continue
             } else if(isFinite(string[i]) == false){
                 return false
@@ -745,11 +997,183 @@ class FloatBrain {
     }
 }
 
+class MathBrain {
+    constructor(){
+        this.Buttons = {
+            "acn": "",
+            "adp": "",
+            "acp": "",
+            "bcn": "",
+            "bdp": "",
+            "bcp": "",
+            "swp": "",
+            "sum": "",
+            "dif": "",
+            "mul": "",
+            "div": ""
+        }
+
+        for(const [key, value] of Object.entries(this.Buttons)){
+            this.Buttons[key] = document.getElementById(key + "Button")
+        }
+
+        this.Buttons["adp"].onclick = () => {this.set("b", this.a)}
+        this.Buttons["bdp"].onclick = () => {this.set("a", this.b)}
+        this.Buttons["swp"].onclick = () => {let temporary = this.a; this.set("a", this.b); this.set("b", temporary)}
+        this.Buttons["sum"].onclick = () => {this.Sum(); this.buildStory()}
+
+        this.aIn = document.getElementById("amvIn")
+        this.bIn = document.getElementById("bmvIn")
+
+        this.aSpan = document.getElementById("amvSpan")
+        this.bSpan = document.getElementById("bmvSpan")
+
+        this.storySpan = document.getElementById("mathStory")
+
+        this.reg = 32
+        this.a = 0
+        this.b = 0
+        this.story = ["<br>Пам'ятаймо про правила академічної доброчесності.<br>Автори не несуть відповідальність за мету використання сервісу користувачем."]
+
+        this.separator = "————————————————————————————————————————————————————————————"
+    }
+
+    buildStory(){
+        this.storySpan.innerHTML = ""
+        this.story.forEach(action => {
+            this.storySpan.innerHTML = action + this.storySpan.innerHTML
+        })
+    }
+
+    selectReg(){
+        this.reg = 8
+        while(this.reg < this.a.length && this.reg < 64){
+            this.reg *= 2
+        }
+        while(this.reg < this.b.length && this.reg < 64){
+            this.reg *= 2
+        }
+    }
+
+    onlyBin(string){
+        if(!parseInt(string)){
+            return false
+        }
+        for (let i = 0; i < string.length; i += 1) {
+            if(string[i] != "0" && string[i] != "1"){
+                return false
+            }
+        }
+        return true
+    }
+
+    getValue(){
+        this.aIn.style.color = "#000000"
+        this.bIn.style.color = "#000000"
+        this.aSpan.style.color = "#000000"
+        this.bSpan.style.color = "#000000"
+
+        if(this.onlyBin(this.aIn.value) && this.aIn.value.length > 0){
+            this.a = this.aIn.value
+        } else {
+            this.a = 0
+            this.aIn.style.color = "#FF0000"
+            this.aSpan.style.color = "#FF0000"
+        }
+
+        if(this.onlyBin(this.bIn.value) && this.bIn.value.length > 0){
+            this.b = this.bIn.value
+        } else {
+            this.b = 0
+            this.bIn.style.color = "#FF0000"
+            this.bSpan.style.color = "#FF0000"
+        }
+
+        this.selectReg()
+        this.Fill()
+    }
+
+    set(where, val){
+        if(where == "a"){
+            this.aIn.value = val
+        } else if(where == "b"){
+            this.bIn.value = val
+        }
+        this.getValue()
+    }
+
+    Fill(){
+        this.a = "0".repeat(this.reg - this.a.length) + this.a
+        this.b = "0".repeat(this.reg - this.b.length) + this.b
+    }
+
+    Sum() {
+        this.Fill()
+        let snapshot = "<br>Нагадуємо, що від'ємні числа необхідно подавати у ДОДАТКОВОМУ коді!<br><br>"
+
+        let result = []
+        let carryBits = []
+        let overflow
+        let column
+
+        for (let i = 0; i < this.reg; i += 1) {
+            carryBits[i] = 0;
+            result[i] = 0;
+        }
+
+        for (let i = this.reg - 1; i >= 0; i -= 1) {
+            column = parseInt(this.a[i]) + parseInt(this.b[i]) + carryBits[i]
+            result[i] = column % 2
+            if (column > 1) {
+                if (i > 0) {
+                    carryBits[i - 1] = 1
+                } else {
+                    overflow = 1
+                }
+            }
+        }
+
+        snapshot += "Операція:<br>" + this.a + "<br>+<br> " + this.b + "<br><br><table class='mathStoryTable'>"
+        snapshot += "<tr><td> Біти переносу </td>"
+        for (let i = 0; i < this.reg; i += 1) {
+            if(carryBits[i])
+                snapshot += "<td>1</td>"
+            else
+                snapshot += "<td></td>"
+        }
+
+        snapshot += "</tr><tr><td>A</td>"
+        for (let i = 0; i < this.reg; i += 1) {
+            snapshot += "<td>" + this.a[i] + "</td>"
+        }
+
+        snapshot += "</tr><tr><td>B</td>"
+        for (let i = 0; i < this.reg; i += 1) {
+            snapshot += "<td>" + this.b[i] + "</td>"
+        }
+
+        snapshot += "</tr><tr><td>Результат</td>"
+        for (let i = 0; i < this.reg; i += 1) {
+            snapshot += "<td>" + result[i] + "</td>"
+        }
+
+        snapshot += "</tr></table><br><br>"
+        snapshot += "Отже, А + В = " + result.join("") + "<br><br>"
+        snapshot += this.separator
+
+        //<table class="mathStoryTable"><tr><td>1</td><td>2</td><td>2</td><td>3</td></tr><tr><td>1</td><td>2</td><td>2</td><td>3</td></tr></table>
+        this.story.push(snapshot)
+    }
+}
+
+
 clocker = new Clocker()
+
+brain = new Brain()
 intBrain = new IntBrain()
 floatBrain = new FloatBrain()
-
-intBrain.In["dec"].focus()
+mathBrain = new MathBrain()
+mathBrain.set()
 
 let clocking = () => {
     clocker.tick()
@@ -761,3 +1185,10 @@ clocking()
 document.addEventListener("keyup", (event)=>{
     clocker.activeReset()
 })
+
+//setTimeout(()=>{mathBrain.aIn.scrollIntoView()}, 500)
+
+
+
+
+
